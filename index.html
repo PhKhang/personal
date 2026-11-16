@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phúc Khang</title>
+  <meta name="description" content="Phúc Khang's personal site. Coming soon.">
+
+  <!-- link preview card (Messenger, Zalo, Facebook, X, Slack...) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pkhang.fyi/">
+  <meta property="og:site_name" content="pkhang.fyi">
+  <meta property="og:title" content="Phúc Khang">
+  <meta property="og:description" content="Software engineer · Class of 2026. Full site in progress.">
+  <meta property="og:image" content="https://pkhang.fyi/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Phúc Khang — Software engineer · Class of 2026 — pkhang.fyi">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <script>try { const t = localStorage.theme; if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* light-dark(light, dark): follows the system unless data-theme pins it */
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#ffffff, #000000);
+      --fg: light-dark(#0a0a0a, #f5f5f5);
+      --muted: light-dark(#6b6b6b, #8a8a8a);
+      --accent: light-dark(#00a39b, #40e0d0);
+      --blob-1: light-dark(#7fe7dc, #0e6b64);
+      --blob-2: light-dark(#c8f7f2, #063b38);
+      --blob-3: light-dark(#a7f0e8, #0b4f4a);
+    }
+    :root[data-theme="light"] { color-scheme: light; }
+    :root[data-theme="dark"] { color-scheme: dark; }
+
+    /* theme switch: the new theme grows as a circle from the button (see script) */
+    ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      /* dvh tracks mobile browser toolbars as they show/hide */
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column;
+      background: var(--bg);
+      color: var(--fg);
+      font: 400 15px/1.7 "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* dreamy gradient blobs: soft-edged radial gradients, no blur filter (cheap on phones) */
+    .glow { position: fixed; inset: 0; overflow: hidden; opacity: .2; z-index: 0; }
+    .glow span {
+      position: absolute; width: 55vmax; height: 55vmax;
+      animation: drift 40s ease-in-out infinite alternate;
+    }
+    .glow span:nth-child(1) { background: radial-gradient(closest-side, var(--blob-1), transparent); top: -20vmax; left: -15vmax; }
+    .glow span:nth-child(2) { background: radial-gradient(closest-side, var(--blob-2), transparent); bottom: -25vmax; right: -15vmax; animation-duration: 50s; }
+    .glow span:nth-child(3) { background: radial-gradient(closest-side, var(--blob-3), transparent); top: 30%; left: 40%; width: 35vmax; height: 35vmax; animation-duration: 34s; }
+    @keyframes drift {
+      to { transform: translate(4vmax, 3vmax) scale(1.06); }
+    }
+
+    /* film grain */
+    .grain {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .08;
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    main {
+      position: relative; z-index: 2;
+      flex: 1;
+      display: grid; place-content: center;
+      padding: 24px 16px;
+    }
+    .term { max-width: 640px; }
+    .prompt { color: var(--muted); }
+    .prompt b { color: var(--accent); font-weight: 400; }
+    h1 {
+      font-size: clamp(2.4rem, 9vw, 4.5rem);
+      font-weight: 700; letter-spacing: -.04em; line-height: 1.1;
+      margin: .2em 0 .35em;
+    }
+    .bio { color: var(--muted); margin-bottom: 2rem; }
+
+    .typed {
+      display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom;
+      width: 0; animation: type 2.2s steps(30) .6s forwards;
+    }
+    @keyframes type { to { width: 30ch; } }
+    .caret {
+      display: inline-block; width: .6em; height: 1.15em; vertical-align: text-bottom;
+      background: var(--accent); margin-left: 2px;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    nav { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; }
+    nav a { color: var(--fg); text-decoration: none; }
+    nav a::before { content: "["; color: var(--muted); }
+    nav a::after  { content: "]"; color: var(--muted); }
+    nav a:hover, nav a:focus-visible { color: var(--accent); }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+    .theme {
+      position: fixed; top: 12px; right: 12px; z-index: 3;
+      padding: 10px; border: 0; background: none; cursor: pointer; color: var(--muted);
+    }
+    .theme::before {
+      content: ""; display: block; width: 16px; height: 16px; border-radius: 50%;
+      border: 1.5px solid currentColor;
+      background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+    }
+    .theme:hover, .theme:focus-visible { color: var(--accent); }
+    .theme:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 50%; }
+
+    footer {
+      position: relative; z-index: 2;
+      padding: 0 16px 16px;
+      color: var(--muted); font-size: 12px; display: flex; justify-content: space-between;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .glow span, .caret { animation: none; }
+      .typed { animation: none; width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="grain" aria-hidden="true"></div>
+  <button class="theme" type="button"></button>
+
+  <main>
+    <div class="term">
+      <h1>Phúc Khang</h1>
+      <!-- TODO: your one-line bio -->
+      <p class="bio">Software engineer · Class of 2026</p>
+
+      <p><span class="typed">full site in progress</span><span class="caret" aria-hidden="true"></span></p>
+
+      <nav aria-label="Links">
+        <a href="https://github.com/PhKhang" rel="me">github</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer>
+    <span>pkhang.fyi</span>
+    <span>© 2026</span>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const btn = document.querySelector('.theme');
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    const systemDark = matchMedia('(prefers-color-scheme: dark)');
+    const isDark = () => (root.dataset.theme || (systemDark.matches ? 'dark' : 'light')) === 'dark';
+    // keep the button label and the mobile browser toolbar color in step with the theme
+    const sync = () => {
+      btn.setAttribute('aria-label', `Switch to ${isDark() ? 'light' : 'dark'} theme`);
+      themeColor.content = getComputedStyle(document.body).backgroundColor;
+    };
+    sync();
+    systemDark.addEventListener('change', sync);
+
+    btn.addEventListener('click', () => {
+      const next = isDark() ? 'light' : 'dark';
+      const apply = () => {
+        root.dataset.theme = next;
+        try { localStorage.theme = next; } catch {}
+        sync();
+      };
+      if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return apply();
+
+      const b = btn.getBoundingClientRect();
+      const x = b.left + b.width / 2, y = b.top + b.height / 2;
+      const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      document.startViewTransition(apply).ready.then(() => root.animate(
+        { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
+        { duration: 550, easing: 'cubic-bezier(.4, 0, .2, 1)', pseudoElement: '::view-transition-new(root)' }
+      ));
+    });
+  </script>
+</body>
+</html>
